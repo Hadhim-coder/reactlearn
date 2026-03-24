@@ -4,6 +4,7 @@ import Counter from './Counter';
 import ToDo from './ToDo';
 import { useEffect, useState } from 'react';
 import AddPost from './AddPost';
+import axios from 'axios';
 
 
 function App() {
@@ -35,6 +36,8 @@ function App() {
   function handleDelete(id) {
     let list = data.filter((obj1) => obj1.id !== id)
     setData(list);
+    let deleteUrl=`${url}/${id}`;
+    axios.delete(deleteUrl)
   }
 
   function handleSubmit(e) {
@@ -43,17 +46,19 @@ function App() {
     setTopic("");
   }
   function addNewPost(topic) {
+
     let id =  String( data.length ? Number( data[data.length - 1].id) + 1 : 1  ) ;
     console.log(id)
     let obj = { id:id, topic, status: false };
     let list = [...data, obj];
     setData(list);
-    let option = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body:JSON.stringify(obj)
-    }
-    apiRequest(url,option);
+    // let option = {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body:JSON.stringify(obj)
+    // }
+    // apiRequest(url,option);
+    axios.post(url,obj);
   }
   let heading = "react";
   function add() {
@@ -69,9 +74,12 @@ function App() {
     }
   }
   async function dataFetching() {
-    let respons = await fetch(url)
-    let values = await respons.json();
-    setData(values);
+    // let respons = await fetch(url)
+    // let values = await respons.json();
+    // setData(values);
+    let respons=await axios.get(url);
+    let value=respons.data;
+    setData(value);
   }
   useEffect(() => {
     dataFetching();
