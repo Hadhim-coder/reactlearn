@@ -2,15 +2,15 @@ import './App.css';
 import Nav from './Nav';
 import Counter from './Counter';
 import ToDo from './ToDo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import AddPost from './AddPost';
 
 
 function App() {
 
   let [num, setNum] = useState(0)
-  let [topic, setTopic] = useState("box");
-
+  let [topic, setTopic] = useState("");
+  let url = "http://localhost:4200/arr";
   function increment() {
     setNum(num += 1);
   }
@@ -37,10 +37,24 @@ function App() {
     setData(list);
   }
 
-  function handleSubmit() {
-
+  function handleSubmit(e) {
+    e.preventDefault()
+    addNewPost(topic);
+    setTopic("");
   }
-
+  function addNewPost(topic) {
+    let id =  String( data.length ? Number( data[data.length - 1].id) + 1 : 1  ) ;
+    console.log(id)
+    let obj = { id:id, topic, status: false };
+    let list = [...data, obj];
+    setData(list);
+    let option = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body:JSON.stringify(obj)
+    }
+    apiRequest(url,option);
+  }
   let heading = "react";
   function add() {
     console.log("react");
@@ -48,6 +62,20 @@ function App() {
   function sub(a, b) {
     console.log(a - b);
   }
+  async function apiRequest(url, option) {
+    let respons = await fetch(url, option);
+    if (respons.status == 200) {
+      console.log("added");
+    }
+  }
+  async function dataFetching() {
+    let respons = await fetch(url)
+    let values = await respons.json();
+    setData(values);
+  }
+  useEffect(() => {
+    dataFetching();
+  }, [])
   return (
     <div className="App">
       <h1>{heading}</h1>

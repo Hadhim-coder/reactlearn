@@ -1,0 +1,24 @@
+{
+    "arr": [
+        {
+            "id": 1,
+            "topic": "java",
+            "status": true
+        },
+        {
+            "id": 2,
+            "topic": "python",
+            "status": false
+        },
+        {
+            "id": 3,
+            "topic": "mysql",
+            "status": false
+        },
+        {
+            "id": 4,
+            "topic": "git",
+            "status": true
+        }
+    ]
+}
