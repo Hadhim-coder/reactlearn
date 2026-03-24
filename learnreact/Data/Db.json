@@ -9,12 +9,8 @@
       "id": "4",
       "topic": "git",
       "status": true
-    },
-    {
-      "id": "18BLF638P70",
-      "topic": "sllsls",
-      "status": false
     }
+    
   ],
   "$schema": "./node_modules/json-server/schema.json"
 }
