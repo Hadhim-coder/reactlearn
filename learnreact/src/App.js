@@ -1,14 +1,15 @@
-import logo from './logo.svg';
 import './App.css';
 import Nav from './Nav';
 import Counter from './Counter';
 import ToDo from './ToDo';
 import { useState } from 'react';
+import AddPost from './AddPost';
 
 
 function App() {
 
   let [num, setNum] = useState(0)
+  let [topic, setTopic] = useState("box");
 
   function increment() {
     setNum(num += 1);
@@ -36,6 +37,9 @@ function App() {
     setData(list);
   }
 
+  function handleSubmit() {
+
+  }
 
   let heading = "react";
   function add() {
@@ -55,6 +59,13 @@ function App() {
         increment={increment}
         decrement={decrement}
       />
+
+      <AddPost
+        topic={topic}
+        handleSubmit={handleSubmit}
+        setTopic={setTopic}
+      />
+
       <ToDo
         data={data}
         handleChange={handleChange}
