@@ -5,12 +5,14 @@ import ToDo from './ToDo';
 import { useEffect, useState } from 'react';
 import AddPost from './AddPost';
 import axios from 'axios';
+import { Route, Router, Routes, useNavigate } from 'react-router-dom';
 
 
 function App() {
 
   let [num, setNum] = useState(0)
   let [topic, setTopic] = useState("");
+  let navigate=useNavigate();
   let url = "http://localhost:4200/arr";
   function increment() {
     setNum(num += 1);
@@ -31,12 +33,15 @@ function App() {
     let list = data.map(
       (obj1) => obj1.id === id ? { ...obj1, status: !obj1.status } : obj1)
     setData(list);
+    let updatedData = list.find((obj) => obj.id === id);
+    let updatUrl = `${url}/${id}`;
+    axios.put(updatUrl, updatedData);
   }
 
   function handleDelete(id) {
     let list = data.filter((obj1) => obj1.id !== id)
     setData(list);
-    let deleteUrl=`${url}/${id}`;
+    let deleteUrl = `${url}/${id}`;
     axios.delete(deleteUrl)
   }
 
@@ -47,9 +52,9 @@ function App() {
   }
   function addNewPost(topic) {
 
-    let id =  String( data.length ? Number( data[data.length - 1].id) + 1 : 1  ) ;
+    let id = String(data.length ? Number(data[data.length - 1].id) + 1 : 1);
     console.log(id)
-    let obj = { id:id, topic, status: false };
+    let obj = { id: id, topic, status: false };
     let list = [...data, obj];
     setData(list);
     // let option = {
@@ -58,7 +63,8 @@ function App() {
     //   body:JSON.stringify(obj)
     // }
     // apiRequest(url,option);
-    axios.post(url,obj);
+    axios.post(url, obj);
+    navigate("/");
   }
   let heading = "react";
   function add() {
@@ -77,8 +83,8 @@ function App() {
     // let respons = await fetch(url)
     // let values = await respons.json();
     // setData(values);
-    let respons=await axios.get(url);
-    let value=respons.data;
+    let respons = await axios.get(url);
+    let value = respons.data;
     setData(value);
   }
   useEffect(() => {
@@ -90,23 +96,32 @@ function App() {
       <button onClick={add}>click here</button>
       <button onClick={() => sub(8, 9)}>sub</button>
       <Nav />
-      <Counter
-        num={num}
-        increment={increment}
-        decrement={decrement}
-      />
+      <Routes>
+        <Route path='/'
+          element={
+            <ToDo
+              data={data}
+              handleChange={handleChange}
+              handleDelete={handleDelete}
+            />
+          }
+        />  
+        <Route path='/counter'
+          element={<Counter
+            num={num}
+            increment={increment}
+            decrement={decrement}
+          />} />
+        <Route path='/addpost'
+          element={
+            <AddPost
+              topic={topic}
+              handleSubmit={handleSubmit}
+              setTopic={setTopic}
+            />
+          } />
+      </Routes>
 
-      <AddPost
-        topic={topic}
-        handleSubmit={handleSubmit}
-        setTopic={setTopic}
-      />
-
-      <ToDo
-        data={data}
-        handleChange={handleChange}
-        handleDelete={handleDelete}
-      />
     </div>
   );
 }

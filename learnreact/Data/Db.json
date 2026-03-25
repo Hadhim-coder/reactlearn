@@ -3,14 +3,23 @@
     {
       "id": "3",
       "topic": "mysql",
-      "status": false
+      "status": true
     },
     {
       "id": "4",
       "topic": "git",
       "status": true
+    },
+    {
+      "id": "PUBF0CQszYY",
+      "topic": "jsx",
+      "status": false
+    },
+    {
+      "id": "QDzMLl0iqVY",
+      "topic": "post",
+      "status": false
     }
-    
   ],
   "$schema": "./node_modules/json-server/schema.json"
 }
